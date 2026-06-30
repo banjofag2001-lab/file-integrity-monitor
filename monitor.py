@@ -1,6 +1,6 @@
 import os
 import hashlib
-
+import json
 
 def calculate_hash(file_path):
     with open(file_path, "rb") as file:
@@ -27,10 +27,20 @@ def scan_folder(folder_path):
 
     print("Scan completed.")
 
-
 def main():
     folder = "test_files"
-    scan_folder(folder)
+
+    hashes = {}
+
+    for file_name in os.listdir(folder):
+        file_path = os.path.join(folder, file_name)
+        hashes[file_name] = calculate_hash(file_path)
+
+    with open("hashes.json", "w") as file:
+        json.dump(hashes, file, indent=4)
+
+    print("Hashes saved successfully.")
+
 
 
 if __name__ == "__main__":
