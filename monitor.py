@@ -48,6 +48,12 @@ def scan_folder(folder_path):
         else:
             print(f"OK: {file_name} has not changed")
 
+
+    for old_file in old_hashes:
+        if old_file not in new_hashes:
+            print(f"ALERT: {old_file} has been deleted!")
+
+
     save_hashes(new_hashes)
 
     print("\nScan completed.")
