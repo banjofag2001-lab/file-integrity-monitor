@@ -79,11 +79,11 @@ Scan completed.
 
 ## Future Improvements
 
-- Add email security alerts
 - Add real-time file monitoring
 - Create a dashboard interface
-- Add log analysis features
-
+- Add advanced log analysis features
+- Add support for monitoring multiple folders
+- Convert into a standalone desktop application
 ## Purpose
 
 This project was created to practice security automation concepts and demonstrate how Python can be used to build cybersecurity monitoring tools.
