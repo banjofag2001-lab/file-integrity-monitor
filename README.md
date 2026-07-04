@@ -20,16 +20,22 @@ This demonstrates a core cybersecurity concept used in system monitoring and thr
 - Store file fingerprints using JSON
 - Compare previous and current file states
 - Detect unauthorized modifications
+- Detect new files
 - Detect deleted files
 - Generate security scan reports
-
+- Send email alerts when changes are detected
+- Run easily on Windows using a launcher script
+- Secure credentials using environment variables
 ## Technologies Used
 
 - Python
 - Hashlib
 - JSON
 - OS module
-- Git
+- Datetime module
+- SMTP email automation
+- Python-dotenv
+- Git and GitHub
 
 ## Project Structure
 
@@ -37,19 +43,15 @@ This demonstrates a core cybersecurity concept used in system monitoring and thr
 file-integrity-monitor/
 
 ├── monitor.py
+├── email_alert.py
 ├── hashes.json
 ├── README.md
 ├── requirements.txt
+├── run_monitor.bat
+├── .gitignore
 ├── reports/
 └── test_files/
 ```
-
-1. The program scans files inside the monitored folder.
-2. It generates a SHA-256 hash for each file.
-3. The hashes are stored as a baseline.
-4. On future scans, new hashes are compared with previous hashes.
-5. Any file changes are detected and reported.
-
 ## Example Output
 Security File Integrity Monitor
 
