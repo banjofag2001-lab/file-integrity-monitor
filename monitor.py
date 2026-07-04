@@ -2,6 +2,7 @@ import os
 import hashlib
 import json
 from datetime import datetime
+from email_alert import send_email_alert
 
 
 def calculate_hash(file_path):
@@ -62,14 +63,18 @@ def scan_folder(folder_path):
 
         new_hashes[file_name] = file_hash
 
+
         if file_name not in old_hashes:
             message = f"NEW FILE DETECTED: {file_name}"
+
 
         elif old_hashes[file_name] != file_hash:
             message = f"WARNING: {file_name} modified"
 
+
         else:
             message = f"OK: {file_name} unchanged"
+
 
         print(message)
         results.append(message)
@@ -86,6 +91,23 @@ def scan_folder(folder_path):
     save_hashes(new_hashes)
 
     save_report(results)
+
+
+    alerts = []
+
+    for result in results:
+        if (
+            "WARNING" in result
+            or "ALERT" in result
+            or "NEW FILE" in result
+        ):
+            alerts.append(result)
+
+
+    if alerts:
+        send_email_alert(alerts)
+        print("Email alert sent.")
+
 
     print("\nReport generated.")
     print("Scan completed.")

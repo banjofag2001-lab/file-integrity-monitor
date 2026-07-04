@@ -1,2 +1,1 @@
-# No external dependencies required
-# Built with Python standard library
+python-dotenv
