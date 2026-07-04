@@ -1,6 +1,7 @@
 import os
 import hashlib
 import json
+from datetime import datetime
 
 
 def calculate_hash(file_path):
@@ -23,14 +24,36 @@ def load_hashes():
     return {}
 
 
+def save_report(results):
+    os.makedirs("reports", exist_ok=True)
+
+    file_name = datetime.now().strftime(
+        "reports/security_report_%Y%m%d_%H%M%S.txt"
+    )
+
+    with open(file_name, "w") as file:
+        file.write("Security Scan Report\n")
+        file.write("=" * 30 + "\n\n")
+
+        file.write(
+            "Scan Time: "
+            + datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            + "\n\n"
+        )
+
+        for result in results:
+            file.write(result + "\n")
+
+
 def scan_folder(folder_path):
     print("=" * 50)
     print("Security File Integrity Monitor")
     print("=" * 50)
-    print("\nScanning folder...\n")
 
     old_hashes = load_hashes()
     new_hashes = {}
+
+    results = []
 
     for file_name in os.listdir(folder_path):
         file_path = os.path.join(folder_path, file_name)
@@ -40,23 +63,32 @@ def scan_folder(folder_path):
         new_hashes[file_name] = file_hash
 
         if file_name not in old_hashes:
-            print(f"NEW FILE DETECTED: {file_name}")
+            message = f"NEW FILE DETECTED: {file_name}"
 
         elif old_hashes[file_name] != file_hash:
-            print(f"WARNING: {file_name} has been modified!")
+            message = f"WARNING: {file_name} modified"
 
         else:
-            print(f"OK: {file_name} has not changed")
+            message = f"OK: {file_name} unchanged"
+
+        print(message)
+        results.append(message)
 
 
     for old_file in old_hashes:
         if old_file not in new_hashes:
-            print(f"ALERT: {old_file} has been deleted!")
+            message = f"ALERT: {old_file} deleted"
+
+            print(message)
+            results.append(message)
 
 
     save_hashes(new_hashes)
 
-    print("\nScan completed.")
+    save_report(results)
+
+    print("\nReport generated.")
+    print("Scan completed.")
 
 
 def main():
